@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
-import {DraftExpense, Expense} from '../interfaces';
+import {Category, DraftExpense, Expense} from '../interfaces';
 
 // * Action
 
@@ -14,7 +14,8 @@ export type BudgetActions =
   | {type: 'delete-expense'; payload: {id: Expense['id']}}
   | {type: 'update-expense-by-id'; payload: {id: Expense['id']}}
   | {type: 'update-expense'; payload: {expense: Expense}}
-  | {type: 'reset-app'};
+  | {type: 'reset-app'}
+  | {type: 'filter-by-category'; payload: {id: Category['id']}};
 // *State
 
 export interface BudgetState {
@@ -22,6 +23,7 @@ export interface BudgetState {
   modal: boolean;
   expenses: Expense[];
   updateId: Expense['id'];
+  currentCategory: Category['id'];
 }
 //*From localStorage needs budget and expenses
 const initialBudget = (): number => {
@@ -38,6 +40,7 @@ export const initialState: BudgetState = {
   modal: false,
   expenses: initialExpenses(),
   updateId: '',
+  currentCategory: '',
 };
 
 const createExpense = (draftExpense: DraftExpense): Expense => {
@@ -86,6 +89,9 @@ export const budgetReducer = (
   }
   if (action.type === 'reset-app') {
     return {...state, budget: 0, expenses: []};
+  }
+  if (action.type === 'filter-by-category') {
+    return {...state, currentCategory: action.payload.id};
   }
   return state;
 };

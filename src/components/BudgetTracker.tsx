@@ -7,7 +7,7 @@ export const BudgetTracker = () => {
 
   const percentageSpent = +((totalExpenses / state.budget) * 100).toFixed(2);
 
-  console.log(percentageSpent);
+  // console.log(percentageSpent);
   const percentageStyles =
     percentageSpent <= 50
       ? '#16a34a'
